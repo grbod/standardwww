@@ -1,0 +1,58 @@
+---
+/*  src/pages/blog/index.astro
+    Blog index page — automatically lists all .md files
+    from src/content/blog/. AI-generated posts appear here
+    as soon as the markdown file is added and site rebuilds. */
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+
+// Glob all markdown files from content/blog/
+const allPosts = await Astro.glob('../../content/blog/*.md');
+
+// Sort by date, newest first
+const posts = allPosts.sort(
+  (a, b) => new Date(b.frontmatter.date).valueOf() - new Date(a.frontmatter.date).valueOf()
+);
+---
+
+<BaseLayout title="Ingredients Blog" description="Formulation insights, ingredient deep-dives, and industry trends from Body Nutrition.">
+
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="section-label" style="color: var(--teal-light);">Ingredients Lab</div>
+      <h1>What's New in Ingredients</h1>
+      <p>Formulation insights, ingredient deep-dives, and industry trends — published regularly.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="blog-grid">
+        {posts.map(post => (
+          <BlogCard
+            title={post.frontmatter.title}
+            slug={post.frontmatter.slug}
+            category={post.frontmatter.category}
+            excerpt={post.frontmatter.excerpt}
+            date={post.frontmatter.date}
+            emoji={post.frontmatter.emoji}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+  }
+
+  @media (max-width: 768px) {
+    .blog-grid { grid-template-columns: 1fr; }
+  }
+</style>

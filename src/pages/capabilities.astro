@@ -1,0 +1,159 @@
+---
+/*  src/pages/capabilities.astro
+    Static page — update when you add new services. */
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const services = [
+  {
+    icon: '🥤',
+    label: 'Powder Packaging',
+    title: 'Pouches & Single-Serve Sachets',
+    desc: 'High-speed vertical form fill seal (VFFS) lines for protein powders, greens blends, collagen, and functional beverages. From 10g single-serve sachets to multi-serving stand-up pouches. We handle blending, filling, sealing, and case packing in a single production run.',
+    specs: ['10g – 5lb fill weights', 'Stand-up zipper pouches', 'Stick packs', 'Sachet packets', 'Nitrogen flush capable'],
+  },
+  {
+    icon: '💊',
+    label: 'Encapsulation',
+    title: 'Capsule Manufacturing',
+    desc: 'Automated encapsulation lines for dietary supplements. We work with both vegetarian (HPMC) and gelatin capsules across sizes 00 to 2. Full capabilities include blending, encapsulation, polishing, bottle filling, cotton and desiccant insertion, induction sealing, and labeling.',
+    specs: ['Sizes 00 – 2', 'Veggie & gelatin', 'Up to 200K/day', 'Bottle or blister pack', 'Custom formulation'],
+  },
+  {
+    icon: '🧴',
+    label: 'Bottles & Tubs',
+    title: 'Protein Tubs & Supplement Bottles',
+    desc: 'Full bottle line for protein powders, pre-workouts, and supplement capsules. Includes auger filling, induction sealing, shrink banding, and label application.',
+    specs: ['4oz – 5lb containers', 'Induction sealed', 'Shrink banded', 'Wrap & panel labeling', 'Custom scoops included'],
+  },
+  {
+    icon: '🧪',
+    label: 'Formulation',
+    title: 'R&D & Custom Formulation',
+    desc: 'In-house formulation services from concept to production-ready spec. Flavor development, stability testing, and iterative prototyping to get your product right before scaling.',
+    specs: ['Custom formulation', 'Flavor matching', 'Stability testing', 'Prototype runs', 'Spec sheet creation'],
+  },
+  {
+    icon: '📋',
+    label: 'Quality',
+    title: 'Quality Control & Compliance',
+    desc: 'Every batch is tested in our in-house QC lab. Full traceability from raw material receipt through finished goods. SQF Level 2 certified, cGMP compliant, and prepared for FDA inspection at any time.',
+    specs: ['In-house QC lab', 'SQF Level 2', 'cGMP compliant', 'Full batch traceability', 'COA for every lot'],
+  },
+  {
+    icon: '🚚',
+    label: 'Fulfillment',
+    title: 'Warehousing & Logistics',
+    desc: 'Pick, pack, and ship direct from our facility. We handle Amazon FBA prep, kitting, and 3PL coordination. No need for a separate warehouse.',
+    specs: ['Pick & pack', 'Amazon FBA prep', 'Kitting & bundling', '3PL coordination', 'Drop shipping'],
+  },
+];
+---
+
+<BaseLayout title="Capabilities">
+
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="section-label" style="color: var(--teal-light);">Capabilities</div>
+      <h1>What We Manufacture</h1>
+      <p>Powder, capsules, stick packs, and bottles — produced at scale in our FDA-registered facility.</p>
+    </div>
+  </div>
+
+  {services.map((s, i) => (
+    <div class:list={['cap-detail', { 'cap-detail-alt': i % 2 === 1 }]}>
+      <div class:list={['cap-detail-inner', { reversed: i % 2 === 1 }]}>
+        <div class="cap-visual">{s.icon}</div>
+        <div class="cap-content">
+          <div class="section-label">{s.label}</div>
+          <h2>{s.title}</h2>
+          <p>{s.desc}</p>
+          <ul class="spec-list">
+            {s.specs.map(spec => <li>{spec}</li>)}
+          </ul>
+        </div>
+      </div>
+    </div>
+  ))}
+
+  <section class="cta-section">
+    <div class="cta-inner">
+      <h2>Have a Product in Mind?</h2>
+      <p>Send us your formula or tell us what you're looking for. We'll handle the rest.</p>
+      <a href="/contact" class="btn btn-primary">Request Samples →</a>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  .cap-detail {
+    padding: 5rem 2rem;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .cap-detail-alt {
+    background: var(--gray-50);
+  }
+
+  .cap-detail-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .cap-detail-inner.reversed {
+    direction: rtl;
+  }
+  .cap-detail-inner.reversed > * {
+    direction: ltr;
+  }
+
+  .cap-visual {
+    background: var(--gray-100);
+    border-radius: var(--radius);
+    aspect-ratio: 4/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    border: 1px solid var(--gray-200);
+  }
+
+  .cap-content h2 {
+    font-family: var(--serif);
+    font-size: 2rem;
+    color: var(--navy);
+    margin-bottom: 1rem;
+  }
+  .cap-content p {
+    color: var(--gray-500);
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+  }
+
+  .spec-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .spec-list li {
+    background: rgba(42, 157, 143, 0.06);
+    border: 1px solid rgba(42, 157, 143, 0.15);
+    color: var(--teal);
+    padding: 0.35rem 0.85rem;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+
+  @media (max-width: 768px) {
+    .cap-detail-inner {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .cap-detail-inner.reversed { direction: ltr; }
+  }
+</style>

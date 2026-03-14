@@ -1,0 +1,388 @@
+---
+/*  src/pages/index.astro — Homepage
+    Static corporate landing page.
+    Update this a few times a year when capabilities change. */
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BlogCard from '../components/BlogCard.astro';
+
+// Pull the 3 most recent blog posts for the homepage preview
+const allPosts = await Astro.glob('../content/blog/*.md');
+const recentPosts = allPosts
+  .sort((a, b) => new Date(b.frontmatter.date).valueOf() - new Date(a.frontmatter.date).valueOf())
+  .slice(0, 3);
+
+// Capabilities data — edit here when you add new services
+const capabilities = [
+  { icon: '🥤', title: 'Powder & Pouches',       desc: 'Single-serve sachets to 5lb bags. High-speed VFFS lines for protein powders, greens, and functional blends.' },
+  { icon: '💊', title: 'Capsules',                desc: 'Automated encapsulation for dietary supplements. Vegetarian and gelatin capsules with precision dosing.' },
+  { icon: '🧴', title: 'Bottles & Tubs',          desc: 'Protein tubs, supplement bottles, and custom containers. Induction sealed and shrink-banded.' },
+  { icon: '🧪', title: 'R&D & Formulation',       desc: 'Custom formulation, flavor development, and stability testing. From concept to production-ready spec.' },
+  { icon: '📋', title: 'Quality & Compliance',    desc: 'In-house QC lab, SQF Level 2, cGMP compliant. Every batch tested and documented.' },
+  { icon: '🚚', title: 'Fulfillment & Logistics', desc: 'Pick, pack, and ship from our facility. Kitting, Amazon prep, and 3PL coordination.' },
+];
+
+const stats = [
+  { number: '15+',  label: 'Years Manufacturing' },
+  { number: '63K',  label: 'Sq Ft Facility' },
+  { number: '500+', label: 'SKUs Produced' },
+  { number: '50M+', label: 'Units Shipped' },
+];
+
+const certifications = ['FDA Registered', 'SQF Level 2', 'cGMP Compliant', 'GFCO Gluten-Free'];
+---
+
+<BaseLayout title="Contract Supplement Manufacturing">
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        FDA-Registered · SQF Level 2 Certified
+      </div>
+      <h1>Contract Manufacturing for <em>Brands That Move</em></h1>
+      <p>From R&D to fulfillment — protein powders, capsules, stick packs, and pouches manufactured in our 63,000 sq ft facility in St. Petersburg, Florida.</p>
+      <div class="hero-actions">
+        <a href="/capabilities" class="btn btn-primary">Explore Capabilities →</a>
+        <a href="/contact" class="btn btn-ghost">Request Samples</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STATS ===== -->
+  <div class="stats-bar">
+    <div class="stats-inner">
+      {stats.map(s => (
+        <div class="stat">
+          <div class="stat-number">{s.number}</div>
+          <div class="stat-label">{s.label}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- ===== CAPABILITIES ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="section-label">What We Do</div>
+      <div class="section-title">Full-Spectrum Manufacturing</div>
+      <div class="section-subtitle">From formulation to finished goods — every step under one roof.</div>
+
+      <div class="cap-grid">
+        {capabilities.map(c => (
+          <a href="/capabilities" class="cap-card">
+            <div class="cap-icon">{c.icon}</div>
+            <h3>{c.title}</h3>
+            <p>{c.desc}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT / FACILITY ===== -->
+  <section class="section about-section">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-visual">
+          <div class="about-icon">🏭</div>
+          <div class="about-placeholder">Facility photo</div>
+        </div>
+        <div class="about-content">
+          <div class="section-label">Our Facility</div>
+          <h2>Built for Scale, Run with Precision</h2>
+          <p>Our 63,000 sq ft FDA-registered facility in St. Petersburg, FL is equipped for high-volume production across multiple product formats. We serve brands at every stage — from startups launching their first SKU to established companies scaling to retail.</p>
+          <p>Every product is manufactured under cGMP conditions with full traceability, in-house quality testing, and SQF Level 2 certification.</p>
+          <div class="certs">
+            {certifications.map(c => (
+              <div class="cert"><span class="cert-dot"></span>{c}</div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RECENT BLOG POSTS ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="section-label">Ingredients Lab</div>
+      <div class="section-title">Latest from the Blog</div>
+      <div class="section-subtitle">Formulation insights, ingredient deep-dives, and industry trends.</div>
+
+      <div class="blog-grid">
+        {recentPosts.map(post => (
+          <BlogCard
+            title={post.frontmatter.title}
+            slug={post.frontmatter.slug}
+            category={post.frontmatter.category}
+            excerpt={post.frontmatter.excerpt}
+            date={post.frontmatter.date}
+            emoji={post.frontmatter.emoji}
+          />
+        ))}
+      </div>
+
+      <div style="text-align: center; margin-top: 2.5rem;">
+        <a href="/blog" class="btn btn-primary">View All Articles →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="cta-section">
+    <div class="cta-inner">
+      <h2>Ready to Scale Your Brand?</h2>
+      <p>Tell us about your product and we'll put together a manufacturing plan and quote within 48 hours.</p>
+      <a href="/contact" class="btn btn-primary">Get a Quote →</a>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  /* ---- Hero ---- */
+  .hero {
+    padding: 10rem 2rem 6rem;
+    background: var(--navy);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(42, 157, 143, 0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(224, 164, 88, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(42, 157, 143, 0.12);
+    border: 1px solid rgba(42, 157, 143, 0.25);
+    color: var(--teal-light);
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.8s ease both;
+  }
+  .badge-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--teal);
+    border-radius: 50%;
+    animation: pulse 2s ease infinite;
+  }
+
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    color: var(--white);
+    line-height: 1.1;
+    max-width: 750px;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.8s ease 0.1s both;
+  }
+  .hero h1 em {
+    color: var(--teal-light);
+    font-style: italic;
+  }
+  .hero p {
+    font-size: 1.15rem;
+    color: rgba(255, 255, 255, 0.55);
+    max-width: 540px;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.8s ease 0.2s both;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    animation: fadeUp 0.8s ease 0.3s both;
+  }
+
+  /* ---- Stats ---- */
+  .stats-bar {
+    background: var(--navy-light);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 3rem 2rem;
+  }
+  .stats-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+  .stat { text-align: center; }
+  .stat-number {
+    font-family: var(--serif);
+    font-size: 2.5rem;
+    color: var(--teal-light);
+    line-height: 1;
+    margin-bottom: 0.35rem;
+  }
+  .stat-label {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.03em;
+  }
+
+  /* ---- Capabilities Grid ---- */
+  .cap-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .cap-card {
+    display: block;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 2rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .cap-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--teal);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+  .cap-card:hover {
+    border-color: rgba(42, 157, 143, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(10, 22, 40, 0.08);
+  }
+  .cap-card:hover::before { transform: scaleX(1); }
+  .cap-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(42, 157, 143, 0.08);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 1.25rem;
+  }
+  .cap-card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.65rem;
+  }
+  .cap-card p {
+    font-size: 0.9rem;
+    color: var(--gray-500);
+    line-height: 1.65;
+  }
+
+  /* ---- About ---- */
+  .about-section {
+    background: var(--gray-100);
+    border-top: 1px solid var(--gray-200);
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .about-visual {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    aspect-ratio: 4/3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .about-icon { font-size: 3rem; }
+  .about-placeholder { font-size: 0.85rem; color: var(--gray-400); }
+  .about-content h2 {
+    font-family: var(--serif);
+    font-size: 2.2rem;
+    color: var(--navy);
+    margin-bottom: 1.25rem;
+    line-height: 1.2;
+  }
+  .about-content p {
+    color: var(--gray-500);
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+  .certs {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .cert {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .cert-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--teal);
+  }
+
+  /* ---- Blog Grid ---- */
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+  }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 768px) {
+    .hero { padding: 7rem 1.25rem 4rem; }
+    .hero-actions { flex-direction: column; }
+    .stats-inner { grid-template-columns: repeat(2, 1fr); }
+    .cap-grid { grid-template-columns: 1fr; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .blog-grid { grid-template-columns: 1fr; }
+  }
+</style>

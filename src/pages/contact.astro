@@ -1,0 +1,186 @@
+---
+/*  src/pages/contact.astro
+    Simple contact page with a form.
+    Wire the form to Netlify Forms, Formspree, or your own endpoint. */
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Contact Us" description="Request a quote, samples, or get in touch with Body Nutrition.">
+
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="section-label" style="color: var(--teal-light);">Get In Touch</div>
+      <h1>Request a Quote</h1>
+      <p>Tell us about your product and we'll put together a manufacturing plan within 48 hours.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="contact-grid">
+
+      <!-- Form -->
+      <div class="contact-form-wrap">
+        <!-- For Netlify Forms, add: netlify name="contact" -->
+        <form method="POST" action="/contact" name="contact" data-netlify="true">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" name="name" required placeholder="Jane Smith" />
+            </div>
+            <div class="form-group">
+              <label for="company">Company</label>
+              <input type="text" id="company" name="company" placeholder="Acme Supplements" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required placeholder="jane@acme.com" />
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="product">Product Type</label>
+            <select id="product" name="product">
+              <option value="">Select a product type...</option>
+              <option>Protein Powder (Pouch)</option>
+              <option>Protein Powder (Tub)</option>
+              <option>Capsules / Supplements</option>
+              <option>Stick Packs</option>
+              <option>Single-Serve Sachets</option>
+              <option>Custom / Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Tell us about your project</label>
+            <textarea id="message" name="message" rows="5" placeholder="Describe your product, estimated volume, timeline, and any specific requirements..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+            Submit Request →
+          </button>
+        </form>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="contact-info">
+        <div class="info-card">
+          <h3>Body Nutrition LLC</h3>
+          <p>2950 47th Ave N<br />St. Petersburg, FL 33714</p>
+        </div>
+
+        <div class="info-card">
+          <h4>Email</h4>
+          <a href="mailto:greg@bodynutrition.com">greg@bodynutrition.com</a>
+        </div>
+
+        <div class="info-card">
+          <h4>Phone</h4>
+          <a href="tel:7273101916">(727) 310-1916</a>
+        </div>
+
+        <div class="info-card">
+          <h4>Certifications</h4>
+          <p>FDA Registered · SQF Level 2<br />cGMP Compliant · GFCO Gluten-Free</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  .contact-grid {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 4rem;
+  }
+
+  /* ---- Form ---- */
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+
+  label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--navy);
+    margin-bottom: 0.4rem;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    color: var(--gray-800);
+    background: var(--white);
+    transition: border-color 0.2s;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.1);
+  }
+
+  textarea { resize: vertical; }
+
+  /* ---- Info sidebar ---- */
+  .contact-info {
+    padding-top: 0.5rem;
+  }
+
+  .info-card {
+    margin-bottom: 2rem;
+  }
+  .info-card h3 {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    color: var(--navy);
+    margin-bottom: 0.5rem;
+  }
+  .info-card h4 {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-bottom: 0.35rem;
+  }
+  .info-card p {
+    color: var(--gray-500);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+  .info-card a {
+    color: var(--teal);
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .info-card a:hover { color: var(--teal-light); }
+
+  @media (max-width: 768px) {
+    .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>

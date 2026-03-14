@@ -1,0 +1,24 @@
+---
+/*  src/pages/blog/[slug].astro
+    Dynamic route — Astro generates one page per .md file.
+    getStaticPaths() tells Astro which slugs exist.
+    The markdown body renders into the BlogPostLayout's <slot />. */
+
+import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await Astro.glob('../../content/blog/*.md');
+
+  return posts.map((post) => ({
+    params: { slug: post.frontmatter.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = post;
+---
+
+<BlogPostLayout frontmatter={post.frontmatter}>
+  <Content />
+</BlogPostLayout>
